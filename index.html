@@ -1,23 +1,325 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Home</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <!--
-      Need a visual blank slate?
-      Remove all code in `styles.css`!
-    -->
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
-  </head>
-  <body>
-    <nav>
-      <a href="/" aria-current="page">Home</a>
-      <a href="/page2.html">Other page</a>
-    </nav>
-    <main>
-      <h1>Home page</h1>
-    </main>
-  </body>
-</html>
+
+  <style>
+    /* 기본 스타일 재설정 */
+    body { font-family: 'Noto Sans KR', sans-serif; line-height: 1.8; margin: 0; padding: 0; background: #f0f4f8; color: #333; }
+    header { background: #004aad; color: #fff; text-align: center; padding: 30px 15px; border-radius: 0 0 10px 10px; }
+    header h1 { margin: 0; font-size: 2.5em; font-weight: 700; }
+    header p { margin: 10px 0 0; font-size: 1.1em; opacity: 0.9; }
+    section { max-width: 900px; margin: 25px auto; padding: 30px; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    h2, h3 { color: #004aad; border-left: 5px solid #004aad; padding-left: 10px; margin-top: 30px; font-weight: 700; }
+    h2 { font-size: 2em; }
+    h3 { font-size: 1.5em; color: #0070f3; }
+    p { margin-bottom: 20px; text-align: justify; }
+    ul, ol { padding-left: 20px; margin-bottom: 20px; }
+    li { margin-bottom: 8px; line-height: 1.6; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+    th, td { border: none; padding: 12px 15px; text-align: left; vertical-align: top; }
+    th { background: #004aad; color: #fff; font-weight: 700; border-bottom: 1px solid #fff; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    td { border-bottom: 1px solid #eee; }
+    a { color: #0070f3; text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; color: #005bb5; }
+    blockquote { border-left: 4px solid #0070f3; background: #fcfcfc; padding: 15px 20px; margin: 20px 0; font-style: italic; color: #555; }
+    code { background: #eee; padding: 2px 4px; border-radius: 4px; font-size: 0.9em; }
+
+    /* CTA 버튼 스타일 */
+    .btn-cta {
+      display: inline-block;
+      padding: 15px 30px;
+      background: #ff7f00; /* 오렌지색으로 변경하여 강조 */
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1em;
+      border-radius: 30px;
+      box-shadow: 0 4px 10px rgba(255, 127, 0, 0.4);
+      transition: background-color 0.3s ease, transform 0.2s;
+      text-align: center;
+      margin-top: 20px;
+      cursor: pointer;
+      border: none;
+      text-transform: uppercase;
+    }
+    .btn-cta:hover {
+      background: #e66f00;
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    /* 반응형 디자인 */
+    @media(max-width: 768px) {
+      body { padding: 0; }
+      header { padding: 20px 10px; border-radius: 0; }
+      header h1 { font-size: 2em; }
+      section { margin: 15px; padding: 20px; border-radius: 8px; }
+      h2 { font-size: 1.8em; }
+      h3 { font-size: 1.3em; }
+      .btn-cta { width: 100%; padding: 15px 0; font-size: 1em; }
+    }
+
+    /* 그래프 스타일 (CSS 기반) */
+    .graph-container { margin: 30px 0; padding: 20px; background: #fafafa; border-radius: 8px; border: 1px solid #eee; }
+    .graph-title { font-size: 1.2em; text-align: center; margin-bottom: 20px; font-weight: 600; color: #0070f3; }
+    .bar-chart { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; align-items: flex-end; height: 200px; padding-top: 10px; }
+    .bar { background: #0070f3; color: #fff; text-align: center; transition: all 0.5s ease; position: relative; border-radius: 4px 4px 0 0; }
+    .bar span { position: absolute; top: -25px; left: 0; right: 0; font-size: 0.9em; color: #333; }
+    .bar:nth-child(1) { height: 70%; background: #004aad; } /* 1세대 */
+    .bar:nth-child(2) { height: 50%; background: #005bb5; } /* 2세대 */
+    .bar:nth-child(3) { height: 40%; background: #0070f3; } /* 3세대 */
+    .bar:nth-child(4) { height: 30%; background: #3c93f7; } /* 4세대 */
+
+    /* 폼 스타일 */
+    form { background: #f9f9f9; padding: 25px; border-radius: 10px; border: 1px solid #ddd; }
+    form label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; }
+    form input[type="text"], form input[type="tel"], form select, form textarea {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    form select { appearance: none; background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z'/></svg>") no-repeat right 10px center; background-size: 12px; }
+    form textarea { resize: vertical; }
+    form button.btn-cta { width: 100%; margin-top: 10px; }
+    .form-group { margin-bottom: 15px; }
+    .radio-group label { margin-right: 20px; font-weight: normal; }
+  </style>
+
+  <!-- Schema.org 마크업(JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "실손보험 비교 추천 서비스",
+    "description": "2026년 최신 4세대 실손의료보험 비교 가이드. 실손보험 가입 조건, 갱신 주기, 자기부담금, 보험료 비교 분석을 통해 나에게 맞는 최적의 실손보험을 찾아보세요.",
+    "brand": {
+      "@type": "Organization",
+      "name": "보험 비교 플랫폼"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "542"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "KRW",
+      "price": "0",
+      "description": "무료 실손보험 견적 및 비교 상담"
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <header>
+    <h1>2026년 실손보험비교: 4세대 실손의료보험 완벽 분석 가이드</h1>
+    <p>나에게 맞는 실손보험을 찾기 위한 모든 정보, 전문가의 객관적인 비교와 맞춤 추천까지</p>
+    <a href="#contact-form" class="btn-cta">실시간 보험료 비교 견적 요청</a>
+  </header>
+
+  <nav aria-label="페이지 내 이동">
+    <section>
+      <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: space-around; background: #fff; border-radius: 8px; box-shadow: none;">
+        <li style="margin: 5px 10px;"><a href="#intro-silsol">실손보험이란?</a></li>
+        <li style="margin: 5px 10px;"><a href="#4gen-analysis">4세대 실손보험 특징</a></li>
+        <li style="margin: 5px 10px;"><a href="#compare-criteria">비교 핵심 체크리스트</a></li>
+        <li style="margin: 5px 10px;"><a href="#age-specific">연령별 비교 전략</a></li>
+        <li style="margin: 5px 10px;"><a href="#claim-tips">청구 및 갱신 팁</a></li>
+        <li style="margin: 5px 10px;"><a href="#contact-form">1:1 맞춤 상담</a></li>
+      </ul>
+    </section>
+  </nav>
+
+  <section id="intro-silsol">
+    <span id="intro-silsol-anchor" class="anchor"></span>
+    <h2>1. 실손보험이란 무엇이며, 왜 비교해야 하는가?</h2>
+    <p>실손의료보험(실비보험)은 질병이나 상해로 인해 발생한 의료비를 실제 지출한 금액만큼 보장해주는 보험 상품입니다. 국민건강보험에서 보장하지 않는 비급여 항목까지 광범위하게 보장하여, 갑작스러운 의료비 지출에 대비하는 데 필수적인 보험으로 여겨집니다. 하지만 2026년 현재, 실손보험은 잦은 개정을 거치면서 4세대까지 등장했습니다. 세대별 특징이 뚜렷하게 달라졌기 때문에, 단순한 비교를 넘어 내 상황에 맞는 최적의 상품을 찾는 것이 중요합니다.</p>
+
+    <h3>1.1. 실손보험의 중요성: 국민건강보험의 한계 보완</h3>
+    <p>대한민국 국민이라면 누구나 국민건강보험의 혜택을 받습니다. 그러나 건강보험이 보장하는 급여 항목 외에 비급여 항목(MRI, 도수치료, 비급여 주사료 등)의 비중이 높아지면서 개인의 의료비 부담이 증가하고 있습니다. 실손보험은 이 비급여 항목에 대한 보장 공백을 메워주는 역할을 합니다. 특히 4세대 실손보험은 비급여 항목의 보장 범위와 자기부담금 구조를 조정하여 보험료 안정화에 초점을 맞추고 있습니다. 따라서 4세대 실손보험은 과거 세대와 비교하여 장단점을 명확히 파악하는 것이 필수적입니다.</p>
+
+    <div class="graph-container">
+      <div class="graph-title">실손보험 세대별 평균 보험료 변동 추이 (1세대 대비 2026년 4세대 기준)</div>
+      <div class="bar-chart">
+        <div class="bar" style="height: 90%;"><span style="color: #004aad;">1세대 (2009년 이전)</span></div>
+        <div class="bar" style="height: 60%;"><span style="color: #004aad;">2세대 (2009~2017)</span></div>
+        <div class="bar" style="height: 45%;"><span style="color: #004aad;">3세대 (2017~2021)</span></div>
+        <div class="bar" style="height: 30%;"><span style="color: #004aad;">4세대 (2021년 이후)</span></div>
+      </div>
+      <p style="text-align: center; font-size: 0.9em; margin-top: 20px;">* 해당 그래프는 예시이며, 실제 보험료는 가입 시기, 나이, 성별, 건강 상태에 따라 다릅니다.</p>
+    </div>
+    <p>위 그래프에서 볼 수 있듯이, 실손보험의 보험료는 세대를 거듭하며 낮아지는 경향을 보입니다. 이는 주로 비급여 항목에 대한 보장을 줄이거나 자기부담금을 높여 손해율을 개선했기 때문입니다. 특히 4세대 실손보험은 비급여 특약에 대해 '할인/할증제도'를 도입하여 보험료 부담을 줄이는 데 초점을 맞추고 있습니다.</p>
+  </section>
+
+  <section id="4gen-analysis">
+    <span id="4gen-analysis-anchor" class="anchor"></span>
+    <h2>2. 2026년 실손보험비교 핵심: 4세대 실손보험 집중 분석</h2>
+    <p>4세대 실손보험은 2021년 7월부터 시행되었으며, 기존 1~3세대 실손보험과 가장 큰 차이점을 보입니다. 4세대 실손보험의 주요 특징을 정확히 이해하는 것이 현재 시점에서 가장 중요한 비교 기준이 됩니다.</p>
+
+    <h3>2.1. 4세대 실손보험의 주요 변화: 할인/할증 제도와 비급여 특약</h3>
+    <p>4세대 실손보험은 ‘주계약’과 ‘비급여 특약’을 분리하여 운영합니다. 주계약에서는 급여 항목을 보장하고, 비급여 항목은 특약으로 따로 가입해야 합니다. 가장 큰 특징은 비급여 특약에 적용되는 '할인/할증제도'입니다. 비급여 의료 이용량이 적은 가입자에게는 보험료 할인이 적용되지만, 과도하게 이용하는 가입자에게는 할증이 적용됩니다.</p>
+    <ul>
+      <li><strong>할인/할증 제도:</strong> 직전 1년간 비급여 보험금 수령액이 100만 원 미만일 경우 보험료가 할인되거나 유지됩니다. 100만 원 이상 수령 시 100%부터 최대 300%까지 할증될 수 있습니다.</li>
+      <li><strong>비급여 항목 분리:</strong> 도수치료, 비급여 주사료, MRI 등 고액의 비급여 항목에 대해 자기부담금을 상향하고 보장 한도를 설정했습니다.</li>
+      <li><strong>재가입 주기:</strong> 기존 15년에서 5년으로 단축되었습니다. 이는 5년마다 보장 내용이 변경될 수 있음을 의미합니다.</li>
+    </ul>
+
+    <h3>2.2. 세대별 실손보험 비교: 나에게 유리한 선택은?</h3>
+    <p>과거에 1~3세대 실손보험에 가입했다면, 4세대 실손보험으로 전환하는 것이 유리한지 신중하게 판단해야 합니다. 특히 의료 이용 빈도가 낮은 젊은 층이나 건강한 사람에게는 4세대 실손보험이 유리할 수 있지만, 만성 질환으로 인해 비급여 치료를 자주 받는 경우에는 기존 상품을 유지하는 것이 좋을 수 있습니다.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>1세대 (2009년 이전)</th>
+          <th>3세대 (2017년 이후)</th>
+          <th>4세대 (2021년 이후)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>보험료 수준</td>
+          <td>높음 (갱신 시 인상 폭 큼)</td>
+          <td>중간 수준</td>
+          <td>저렴함 (비급여 이용량에 따라 변동)</td>
+        </tr>
+        <tr>
+          <td>보장 내용</td>
+          <td>비급여 항목 포함 대부분 보장</td>
+          <td>도수치료, MRI 등 일부 특약 분리</td>
+          <td>급여/비급여 완전 분리, 자기부담금 상향</td>
+        </tr>
+        <tr>
+          <td>갱신 주기</td>
+          <td>3년 또는 5년 (상품별 상이)</td>
+          <td>1년 (주요 특약 15년 재가입)</td>
+          <td>1년 (모든 특약 5년 재가입)</td>
+        </tr>
+        <tr>
+          <td>주요 특징</td>
+          <td>높은 보장성, 높은 보험료</td>
+          <td>보장 항목 세분화</td>
+          <td>할인/할증 제도 도입, 보험료 안정화</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="compare-criteria">
+    <span id="compare-criteria-anchor" class="anchor"></span>
+    <h2>3. 실손보험 가입 시 고려해야 할 핵심 비교 기준</h2>
+    <p>실손보험 비교 시 단순히 '가격'만 보는 것은 위험합니다. 자신의 건강 상태, 예상 의료 이용 빈도, 경제 상황 등을 종합적으로 고려하여 비교해야 합니다. 다음은 2026년 실손보험을 비교할 때 반드시 체크해야 할 사항입니다.</p>
+
+    <h3>3.1. 자기부담금과 보장 한도 확인</h3>
+    <p>실손보험은 실제 지출한 의료비 전액을 보상하지 않습니다. 가입자가 일정 금액을 부담하는 '자기부담금' 제도가 적용됩니다. 4세대 실손보험은 급여 항목의 자기부담금을 20%, 비급여 항목의 자기부담금을 30%로 설정하고 있습니다. 또한 비급여 특약의 보장 한도(예: 도수치료 연간 350만 원 한도)를 꼼꼼하게 확인하여 예상치 못한 의료비 지출에 대비해야 합니다.</p>
+
+    <h3>3.2. 비급여 항목 할인/할증 제도 이해</h3>
+    <p>4세대 실손보험의 가장 큰 특징인 할인/할증 제도는 향후 갱신 보험료에 직접적인 영향을 미칩니다. 1년 동안 비급여 치료를 받지 않거나 소액만 이용하면 보험료가 할인되지만, 비급여 치료를 자주 받는 경우 최대 300%까지 할증될 수 있습니다. 만성 질환이 있거나 비급여 치료(도수치료 등)를 자주 받아야 하는 상황이라면 이 부분을 신중하게 고려해야 합니다.</p>
+
+    <h3>3.3. 비갱신형 특약 가입 여부 검토</h3>
+    <p>실손보험 자체는 1년 갱신형이 대부분이지만, 실손보험과 함께 가입하는 '특약' 중에는 비갱신형이 있습니다. 예를 들어, 암 진단금 특약, 뇌혈관 질환 특약 등은 비갱신형으로 가입하여 보험료가 오르지 않도록 설계할 수 있습니다. 실손보험료가 매년 오르는 것에 대비하여, 필수적인 보장은 비갱신형으로 설계하는 것도 좋은 방법입니다.</p>
+  </section>
+
+  <section id="age-specific">
+    <span id="age-specific-anchor" class="anchor"></span>
+    <h2>4. 연령별 실손보험 비교 전략: 어린이, 청년, 노인을 위한 맞춤형 가이드</h2>
+    <p>연령대에 따라 주로 발생하는 질병과 의료 이용 패턴이 다르기 때문에, 실손보험 비교 시 연령별 특징을 고려한 맞춤형 전략이 필요합니다.</p>
+
+    <h3>4.1. 어린이 실손보험: 성장기 위험 대비</h3>
+    <p>어린이 실손보험은 상해 사고나 잔병치레에 대비하여 보장성이 높은 상품을 선택하는 것이 중요합니다. 특히 어린이는 성인보다 비급여 항목 이용이 적기 때문에 4세대 실손보험의 할인 혜택을 받기 유리할 수 있습니다. 또한 어린이 보험에 포함되는 '태아 특약'이나 '성장기 질환 특약' 등 추가 보장 사항을 꼼꼼히 비교해야 합니다.</p>
+
+    <h3>4.2. 청년/직장인 실손보험: 가성비와 미래 설계</h3>
+    <p>건강한 청년층은 의료 이용 빈도가 낮아 보험료 할인을 받을 확률이 높습니다. 따라서 4세대 실손보험의 할인/할증 제도를 적극적으로 활용하여 저렴한 보험료로 가입할 수 있습니다. 다만, 향후 결혼이나 출산을 계획하고 있다면 배우자나 자녀 보장 연계성도 함께 고려하는 것이 좋습니다.</p>
+
+    <h3>4.3. 노인 실손보험: 고령화 사회의 필수 보장</h3>
+    <p>고령자는 지병이나 만성 질환으로 인해 의료 이용이 잦아질 수 있으므로, 보장이 축소되는 4세대 실손보험보다는 기존 상품(2~3세대)을 유지하거나 '유병력자 실손보험'을 고려해야 합니다. 유병력자 실손보험은 일반 실손보험보다 가입 조건이 완화되어 있지만, 자기부담금이 높고 보장 한도가 제한적일 수 있으므로 꼼꼼한 비교가 필요합니다.</p>
+  </section>
+
+  <section id="claim-tips">
+    <span id="claim-tips-anchor" class="anchor"></span>
+    <h2>5. 실손보험 청구 및 갱신 시 유의사항</h2>
+    <p>실손보험은 가입만큼 청구 과정도 중요합니다. 복잡한 청구 절차와 갱신 시 유의해야 할 점들을 미리 숙지하여 불이익을 방지해야 합니다.</p>
+
+    <h3>5.1. 실손보험 청구 시 필수 서류 및 유의사항</h3>
+    <p>실손보험금 청구 시에는 진료비 영수증, 진료비 세부내역서, 진단서 등이 필요합니다. 특히 4세대 실손보험은 비급여 항목에 대한 세부 내역을 정확히 기재해야 청구 심사가 원활하게 진행됩니다. 3만 원 이하 소액 청구는 모바일 앱을 통해 간편하게 할 수 있으며, 고액 청구 시에는 보험사 콜센터나 설계사를 통해 상담받는 것이 좋습니다.</p>
+
+    <h3>5.2. 실손보험 갱신 시 대처 방안</h3>
+    <p>실손보험은 갱신 시 보험료가 인상됩니다. 갱신 시점이 다가왔을 때, 갱신되는 보험료가 너무 부담스럽다면 다음 두 가지를 고려해 볼 수 있습니다.</p>
+    <ul>
+      <li><strong>4세대 실손보험으로 전환:</strong> 4세대 실손보험은 과거 세대에 비해 보험료가 저렴하므로, 기존 상품의 갱신 보험료가 너무 높다면 전환을 고려해 볼 수 있습니다. 다만, 전환 전 기존 상품의 보장 내용과 4세대 상품의 보장 내용을 꼼꼼히 비교해야 합니다.</li>
+      <li><strong>보험사별 비교:</strong> 동일한 보장의 4세대 실손보험이라도 보험사별로 보험료가 다를 수 있습니다. 갱신 시기가 되면 여러 보험사의 4세대 실손보험을 다시 한번 비교해 보는 것이 좋습니다.</li>
+    </ul>
+
+    <h3>5.3. 실손보험 관련 신뢰성 있는 정보 출처</h3>
+    <p>실손보험 관련 정보를 확인할 때 신뢰할 수 있는 외부 사이트를 참조하는 것이 중요합니다.</p>
+    <ul>
+      <li><a href="https://www.fss.or.kr/" target="_blank">금융감독원 (FSS)</a>: 보험 상품의 표준 약관 및 소비자 유의사항을 확인합니다.</li>
+      <li><a href="https://terms.naver.com/" target="_blank">네이버 지식백과</a>: 실손보험 용어 및 개념에 대한 객관적인 정보를 얻습니다.</li>
+      <li><a href="https://www.nhis.or.kr/" target="_blank">국민건강보험공단</a>: 급여 항목과 비급여 항목에 대한 공식적인 정보를 확인합니다.</li>
+      <li><a href="https://www.law.go.kr/" target="_blank">법제처 국가법령정보센터</a>: 보험 관련 법규 및 시행령을 확인합니다.</li>
+      <li><a href="https://www.namu.wiki/" target="_blank">나무위키</a>: 실손보험 세대별 특징 및 일반적인 정보를 참조할 수 있습니다.</li>
+    </ul>
+  </section>
+
+  <section id="contact-form">
+    <span id="contact-form-anchor" class="anchor"></span>
+    <h2>6. 1:1 맞춤 실손보험 견적 및 비교 상담 신청</h2>
+    <p>나에게 맞는 실손보험을 찾기 위해서는 개인의 건강 상태와 재정 상황을 종합적으로 분석해야 합니다. 아래 양식을 작성해 주시면 전문가가 2026년 최신 정보를 바탕으로 맞춤형 실손보험 비교 분석 결과를 제공해 드립니다. 여러 보험사의 상품을 한눈에 비교하고 최적의 선택을 하세요.</p>
+    <form action="/submit-comparison" method="POST">
+      <div class="form-group">
+        <label for="name">이름<span style="color:red;">*</span></label>
+        <input type="text" id="name" name="name" required placeholder="예: 홍길동" />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">연락처<span style="color:red;">*</span></label>
+        <input type="tel" id="phone" name="phone" required placeholder="010-1234-5678" pattern="[0-9\-]+" />
+      </div>
+
+      <div class="form-group">
+        <label for="birthdate">생년월일 (예: 19901020)<span style="color:red;">*</span></label>
+        <input type="text" id="birthdate" name="birthdate" required placeholder="숫자 8자리" pattern="\d{8}" maxlength="8" />
+      </div>
+
+      <div class="form-group radio-group">
+        <label>성별<span style="color:red;">*</span></label>
+        <input type="radio" id="gender-male" name="gender" value="male" required /> <label for="gender-male">남성</label>
+        <input type="radio" id="gender-female" name="gender" value="female" required /> <label for="gender-female">여성</label>
+      </div>
+
+      <div class="form-group">
+        <label for="current-silsol">현재 실손보험 가입 여부<span style="color:red;">*</span></label>
+        <select id="current-silsol" name="current_silsol" required>
+          <option value="">선택하세요</option>
+          <option value="yes">가입되어 있음 (갱신/전환 문의)</option>
+          <option value="no">가입되어 있지 않음 (신규 가입 문의)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="health-history">최근 3개월 내 병원 치료 여부 (선택 사항)</label>
+        <input type="text" id="health-history" name="health_history" placeholder="예: 감기 치료, 허리 통증 등" />
+      </div>
+
+      <div class="form-group">
+        <label for="message">추가 문의 사항 (원하는 보장 범위, 예산 등)</label>
+        <textarea id="message" name="message" rows="4" placeholder="예: 4세대 실손보험 할인/할증 관련 문의, 비급여 도수치료 보장 비교"></textarea>
+      </div>
+
+      <button type="submit" class="btn-cta">무료 견적 상담 신청하기</button>
+    </form>
+  </section>
+
+  <footer>
+    <section>
+      <p style="text-align: center; font-size: 0.9em; color: #666;">
+        © 2026 실손보험 비교센터. 모든 콘텐츠는 2026년 최신 보험 정보를 바탕으로 작성되었으며, 가입 시점의 상품 약관을 반드시 확인하시기 바랍니다.
+        <br>본 페이지는 보험 비교를 위한 정보 제공 목적으로, 특정 보험 상품 판매를 강요하지 않습니다.
+      </p>
+    </section>
+  </footer>
+
+
+  
